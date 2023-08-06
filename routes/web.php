@@ -14,5 +14,17 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect()->route('login');
+});
+
+Auth::routes(['register' => false,'reset' => false]);
+
+Route::middleware(['auth','is.admin','web'])->group(function () {
+    Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+    //list siswa
+    Route::get('siswa',[\App\Http\Controllers\HomeController::class,'siswa'])->name('siswa.index');
+    //list modul
+    Route::get('modul',[\App\Http\Controllers\HomeController::class,'modul'])->name('modul.index');
+
 });

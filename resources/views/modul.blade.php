@@ -24,7 +24,7 @@
                                     <td>{{$m->title_module}}</td>
                                     <td>{{$m->des_module}}</td>
                                     <td>{{$m->author}}</td>
-                                    <td><button class="btn btn-success">Detail</td>
+                                    <td><a href="{{route('modul.show',$m->id_module)}}" class="btn btn-success">Detail</td>
                                 </tr>
                                 @endforeach
 

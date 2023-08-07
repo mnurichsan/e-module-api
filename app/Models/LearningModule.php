@@ -15,4 +15,5 @@ class LearningModule extends Model
         return $this->hasMany(LearningMaterial::class,'id_module','id_module');
     }
 
+
 }

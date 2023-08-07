@@ -25,10 +25,6 @@ Route::prefix('auth')->group(function () {
 
 Route::middleware(['auth:sanctum'])->group(function () {
 
-    // Route::prefix('profile')->group(function(){
-
-    // });
-
     //profile
     Route::prefix('profile')->group(function(){
         Route::get('me',[ProfileController::class,'me']);
@@ -52,8 +48,10 @@ Route::middleware(['auth:sanctum'])->group(function () {
             Route::get('list/{id}',[ModuleController::class,'listQuizlById']);
 
             //post jawaban quiz
-
+            Route::post('answer',[ModuleController::class,'storeAnswer']);
             //get list quiz siswa dan scorenya
+
+            Route::get('progress',[ModuleController::class,'progressStudent']);
 
         });
 

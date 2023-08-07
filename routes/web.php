@@ -24,7 +24,9 @@ Route::middleware(['auth','is.admin','web'])->group(function () {
 
     //list siswa
     Route::get('siswa',[\App\Http\Controllers\HomeController::class,'siswa'])->name('siswa.index');
+    Route::get('siswa/{id}',[\App\Http\Controllers\HomeController::class,'detail_siswa'])->name('siswa.show');
     //list modul
     Route::get('modul',[\App\Http\Controllers\HomeController::class,'modul'])->name('modul.index');
+    Route::get('modul/{id}',[\App\Http\Controllers\HomeController::class,'detail_module'])->name('modul.show');
 
 });

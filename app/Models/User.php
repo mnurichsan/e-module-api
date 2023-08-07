@@ -49,4 +49,9 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function progress(){
+        return $this->hasMany(LearningProgress::class,'id_user','id_user');
+    }
+
 }

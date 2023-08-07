@@ -14,4 +14,9 @@ class Practice extends Model
     {
         return json_decode($this->attributes['answer_choices']);
     }
+
+    public function studentAnswer(){
+        return $this->belongsTo(StudentAnswer::class,'id_quiz','id_quiz');
+    }
+
 }

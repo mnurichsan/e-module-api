@@ -22,7 +22,7 @@
                                     <th>{{$loop->iteration}}</th>
                                     <td>{{$siswa->fullname}}</td>
                                     <td>{{$siswa->email}}</td>
-                                    <td><button class="btn btn-success">Detail</td>
+                                    <td><a href="{{route('siswa.show',$siswa->id_user)}}" class="btn btn-success">Detail</td>
                                 </tr>
                                 @endforeach
 

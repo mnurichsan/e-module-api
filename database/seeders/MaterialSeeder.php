@@ -19,7 +19,7 @@ class MaterialSeeder extends Seeder
                 'id_module' => 1,
                 'title_material' => 'Biologi',
                 'content' => 'testing',
-                'tipe_material' => 'String',
+                'tipe_material' => 'Text',
                 'file_material' => 'https://laravel.com/img/logomark.min.svg',
                 'created_at' => now(),
                 'updated_at' => now()
@@ -28,7 +28,7 @@ class MaterialSeeder extends Seeder
                 'id_module' => 1,
                 'title_material' => 'Biologi',
                 'content' => 'testing',
-                'tipe_material' => 'String',
+                'tipe_material' => 'Text',
                 'file_material' => 'https://laravel.com/img/logomark.min.svg',
                 'created_at' => now(),
                 'updated_at' => now()
@@ -37,7 +37,7 @@ class MaterialSeeder extends Seeder
                 'id_module' => 2,
                 'title_material' => 'Matematika',
                 'content' => 'testing',
-                'tipe_material' => 'String',
+                'tipe_material' => 'Text',
                 'file_material' => 'https://laravel.com/img/logomark.min.svg',
                 'created_at' => now(),
                 'updated_at' => now()

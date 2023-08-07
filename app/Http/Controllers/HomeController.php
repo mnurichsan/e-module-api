@@ -8,6 +8,7 @@ use App\Models\LearningProgress;
 use App\Models\Practice;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Redirect;
 
 class HomeController extends Controller
 {
@@ -56,6 +57,66 @@ class HomeController extends Controller
 
         $detailModule = LearningModule::where('id_module',$id)->with('material','material.practice')->first();
         return view('detail_modul',compact('detailModule'));
+
+    }
+
+    public function tambah_module(){
+        return view('tambah_modul');
+    }
+
+    public function store_module(Request $request){
+
+        $this->validate($request,[
+            'module_title'=>'required',
+            'module_author' => 'required',
+            'des_module' => 'required',
+            'content_module' => 'required'
+        ]);
+
+        $data = [
+            'title_module' => $request->module_title,
+            'des_module' => $request->des_module,
+            'content' => $request->content_module,
+            'author' => $request->module_author
+        ];
+
+        LearningModule::create($data);
+
+        return redirect()->back()->with('success', 'Berhasil Menambahkan Data');
+
+    }
+
+    public function delete_module($id){
+        $modul = LearningModule::find($id);
+        $modul->delete();
+
+        return redirect()->back()->with('success', 'Berhasil Menghapus Data');
+    }
+
+    public function edit_module($id){
+        $modulDetail = LearningModule::findOrFail($id);
+        return view('edit_modul',compact('modulDetail'));
+    }
+
+    public function update_module(Request $request,$id){
+        $this->validate($request,[
+            'module_title'=>'required',
+            'module_author' => 'required',
+            'des_module' => 'required',
+            'content_module' => 'required'
+        ]);
+
+        $data = [
+            'title_module' => $request->module_title,
+            'des_module' => $request->des_module,
+            'content' => $request->content_module,
+            'author' => $request->module_author
+        ];
+
+        $modulDetail = LearningModule::findOrFail($id);
+
+        $modulDetail->update($data);
+        return redirect()->back()->with('success', 'Berhasil Mengupdate Data');
 
     }
 }

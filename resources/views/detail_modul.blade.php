@@ -19,7 +19,7 @@
                         <p>Deskripsi Module : {{$detailModule->des_module}} </p>
                         <hr>
                         <h6>Content</h6>
-                        <p>{{$detailModule->content}}</p>
+                        <p>{!! $detailModule->content !!}</p>
                     </div>
                 </div>
             </div>

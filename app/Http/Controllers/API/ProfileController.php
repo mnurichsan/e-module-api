@@ -65,7 +65,14 @@ class ProfileController extends Controller
                 $ext = $request->image->getClientOriginalExtension();
                 if(in_array($ext,$extArray)){
                     $pathImage =  $this->uploadFile($request->image,'user','image');
-                    $urlImage = url('/'.$pathImage);
+                    $baseUrl =  url('/');
+
+                    if($baseUrl == "https://emodule-api.tempatkoding.com"){
+                        $urlImage = url("/storage/".$pathImage);
+                    }else{
+                        $urlImage = url('/'.$pathImage);
+                    }
+
                     $dataUserProfile['image'] = $urlImage;
 
                 }else{

@@ -40,6 +40,7 @@ class ProfileController extends Controller
             $validator = Validator::make($request->all(), [
                 'email' => 'required|email|string',
                 'fullname' => 'required|string',
+                'image' => 'file|mimes:png,jpg,jpeg|max:2046'
             ]);
 
             if ($validator->fails()) {
@@ -55,6 +56,25 @@ class ProfileController extends Controller
                 'email' => $request->email,
                 'fullname' => $request->fullname
             ];
+
+            if($request->has('image')){
+                $extArray = [
+                    'jpg','png','jpeg'
+                ];
+
+                $ext = $request->image->getClientOriginalExtension();
+                if(in_array($ext,$extArray)){
+                    $pathImage =  $this->uploadFile($request->image,'user','image');
+                    $urlImage = url('/'.$pathImage);
+                    $dataUserProfile['image'] = $urlImage;
+
+                }else{
+                    return ResponseBuilder::asError()
+                    ->withHttpCode(401)
+                    ->withMessage('The image must be a file of type: png, jpg, jpeg')
+                    ->build();
+                }
+            }
 
             $user = User::find(Auth::user()->id_user);
 
@@ -111,6 +131,28 @@ class ProfileController extends Controller
                 ->withHttpCode(500)
                 ->withMessage('Something Error')
                 ->build();
+        }
+    }
+
+    private function uploadFile($file,$root_folder,$folderName)
+    {
+        try {
+            $fileNameWithExt = $file->getClientOriginalName();
+            $fileNameWithExt = str_replace(" ", "-", $fileNameWithExt);
+            $filename = pathinfo($fileNameWithExt, PATHINFO_FILENAME);
+            $filename = preg_replace("/[^a-zA-Z0-9\s]/", "", $filename);
+            $filename = urlencode($filename);
+
+            $extension = $file->getClientOriginalExtension();
+
+            $fileNameToStore = $filename . '_' . time() . '.' . $extension;
+
+            $path = $file->storeAs('files/uploads/'.$root_folder.'/'.$folderName, $fileNameToStore, 'public');
+
+            return $path;
+
+        } catch (\Throwable $th) {
+            return false;
         }
     }
 

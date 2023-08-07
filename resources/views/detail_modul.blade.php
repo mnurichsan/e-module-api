@@ -24,6 +24,11 @@
                 </div>
             </div>
         </div>
+        <div class="row mt-2">
+            <div class="col text-end">
+                <a href="" class="btn btn-primary">Tambah material</a>
+            </div>
+        </div>
         <div class="row justify-content-center mt-2">
             <div class="col-md-12">
                 <div class="card">

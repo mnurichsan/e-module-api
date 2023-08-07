@@ -14,8 +14,21 @@
                         {{ __('Detail Siswa '.$detailSiswa?->fullname) }}
                     </div>
                     <div class="card-body">
-                        <h6>Nama : {{$detailSiswa->fullname}} </h6>
-                        <h6>Email : {{$detailSiswa->email}} </h6>
+
+                        <div class="d-flex bd-highlight">
+                            <div class="p-2 w-100 bd-highlight">
+                                <h6>Nama : {{$detailSiswa->fullname}} </h6>
+                                <h6>Email : {{$detailSiswa->email}} </h6>
+                            </div>
+
+                            <div class="p-2 flex-shrink-1 bd-highlight">
+                                @if($detailSiswa->image != null)
+                                <img src="{{$detailSiswa->image}}" class="img-thumbnail" width="100" height="80" alt="...">
+                                @else
+                                <img src="https://static.vecteezy.com/system/resources/previews/008/442/086/original/illustration-of-human-icon-user-symbol-icon-modern-design-on-blank-background-free-vector.jpg" class="img-thumbnail" width="100" height="80" alt="...">
+                                @endif
+                            </div>
+                          </div>
 
                     </div>
                 </div>

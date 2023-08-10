@@ -45,6 +45,8 @@ class Handler extends ExceptionHandler
                     ->withHttpCode(401)
                     ->withMessage('Sesi Berakhir')
                     ->build();
+            }else{
+                return redirect()->route('login');
             }
 
         });

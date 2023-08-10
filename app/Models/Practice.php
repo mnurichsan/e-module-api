@@ -9,6 +9,7 @@ class Practice extends Model
 {
     use HasFactory;
     protected $guarded = [];
+    protected $primaryKey = 'id_quiz';
 
     public function getAnswerChoicesAttribute()
     {

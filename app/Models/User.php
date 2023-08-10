@@ -55,4 +55,13 @@ class User extends Authenticatable
         return $this->hasMany(LearningProgress::class,'id_user','id_user');
     }
 
+    public function getImageAttribute()
+    {
+         if($this->attributes['image'] == null){
+            return "https://static.vecteezy.com/system/resources/previews/008/442/086/original/illustration-of-human-icon-user-symbol-icon-modern-design-on-blank-background-free-vector.jpg";
+          }else{
+            return $this->attributes['image'];
+         }
+    }
+
 }

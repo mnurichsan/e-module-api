@@ -33,11 +33,20 @@ Route::middleware(['auth','is.admin','web'])->group(function () {
         Route::get('show/{id}',[\App\Http\Controllers\HomeController::class,'detail_module'])->name('modul.show');
         Route::get('edit/{id}',[\App\Http\Controllers\HomeController::class,'edit_module'])->name('modul.edit');
         Route::post('update/{id}',[\App\Http\Controllers\HomeController::class,'update_module'])->name('modul.update');
-
         Route::get('/detele/{id}',[\App\Http\Controllers\HomeController::class,'delete_module'])->name('modul.delete');
 
-        Route::prefix('material')->group(function () {
-            //
+        Route::prefix('{id}/material')->group(function () {
+            Route::get('create',[\App\Http\Controllers\HomeController::class,'tambah_material'])->name('material.create');
+            Route::post('post',[\App\Http\Controllers\HomeController::class,'store_material'])->name('material.post');
+            Route::get('show/{id_material}',[\App\Http\Controllers\HomeController::class,'edit_material'])->name('material.show');
+            Route::post('update/{id_material}',[\App\Http\Controllers\HomeController::class,'update_material'])->name('material.update');
+            Route::get('delete/{id_material}',[\App\Http\Controllers\HomeController::class,'delete_material'])->name('material.delete');
+
+            Route::prefix('{id_material}/practice')->group(function () {
+                Route::get('create',[\App\Http\Controllers\HomeController::class,'tambah_practice'])->name('practice.create');
+                Route::post('post',[\App\Http\Controllers\HomeController::class,'store_practice'])->name('practice.store');
+                Route::get('delete/{id_practice}',[\App\Http\Controllers\HomeController::class,'delete_practice'])->name('practice.delete');
+            });
         });
     });
 

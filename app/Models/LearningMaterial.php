@@ -20,4 +20,8 @@ class LearningMaterial extends Model
         return $this->hasMany(Practice::class,'id_material','id_material');
     }
 
+    public function progress(){
+        return $this->hasOne(LearningProgress::class,'id_material','id_material');
+    }
+
 }

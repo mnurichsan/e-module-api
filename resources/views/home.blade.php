@@ -11,6 +11,7 @@
                     </div>
                 </div>
             </div>
+            @if (Auth::user()->hasRole('admin'))
             <div class="col">
                 <div class="card shadow-sm">
                     <div class="card-body text-center">
@@ -37,6 +38,7 @@
                     </div>
                 </div>
             </div>
+            @endif
         </div>
 
         <div class="row justify-content-center mt-4">

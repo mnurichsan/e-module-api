@@ -18,7 +18,7 @@ class IsAdmin
     public function handle(Request $request, Closure $next)
     {
         $user = Auth::user();
-        if($user->hasRole('admin')){
+        if($user->hasRole('admin') || $user->hasRole('Guru')){
             return $next($request);
         }else{
             Session::flush();

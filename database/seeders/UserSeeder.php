@@ -15,26 +15,36 @@ class UserSeeder extends Seeder
      */
     public function run()
     {
-        $siswa = [
-            'fullname' => 'Siswa',
-            'email' => 'siswa@mail.com',
-            'username' => 'siswa',
+        // $siswa = [
+        //     'fullname' => 'Siswa',
+        //     'email' => 'siswa@mail.com',
+        //     'username' => 'siswa',
+        //     'password' => Hash::make('password')
+        // ];
+
+        // $userSiswa = User::create($siswa);
+        // $userSiswa->attachRole('siswa');
+
+
+        // $admin = [
+        //     'fullname' => 'Administrator',
+        //     'username' => 'admin',
+        //     'email' => 'admin@mail.com',
+        //     'password' => Hash::make('password')
+        // ];
+
+        // $userAdmin = User::create($admin);
+        // $userAdmin->attachRole('admin');
+
+        $guru = [
+            'fullname' => 'Guru',
+            'username' => 'Guru',
+            'email' => 'guru@mail.com',
             'password' => Hash::make('password')
         ];
 
-        $userSiswa = User::create($siswa);
-        $userSiswa->attachRole('siswa');
-
-
-        $admin = [
-            'fullname' => 'Administrator',
-            'username' => 'admin',
-            'email' => 'admin@mail.com',
-            'password' => Hash::make('password')
-        ];
-
-        $userAdmin = User::create($admin);
-        $userAdmin->attachRole('admin');
+        $userGuru = User::create($guru);
+        $userGuru->attachRole('guru');
 
     }
 }

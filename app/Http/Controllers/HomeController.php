@@ -52,13 +52,17 @@ class HomeController extends Controller
     public function detail_siswa($id)
     {
         $detailSiswa = User::whereRoleIs('siswa')->with('progress', 'progress.material', 'progress.material.module')->where('id_user', $id)->firstOrFail();
-        return view('detail_siswa', compact('detailSiswa'));
+        $moduls = LearningModule::with('material', 'material.progress')->whereHas('material.progress', function ($query) use ($id) {
+            $query->where('id_user', '=', $id);
+        })->get();
+        $varTotalProgress = [];
+        return view('detail_siswa', compact('detailSiswa','moduls','varTotalProgress'));
     }
 
     public function detail_module($id)
     {
 
-        $detailModule = LearningModule::where('id_module', $id)->with('material', 'material.practice')->first();
+        $detailModule = LearningModule::where('id_module', $id)->with('material')->first();
         return view('detail_modul', compact('detailModule'));
     }
 
@@ -155,23 +159,22 @@ class HomeController extends Controller
             ]);
 
             $extArray = [
-                'jpg','png','jpeg'
+                'jpg', 'png', 'jpeg'
             ];
 
             $ext = $request->material_file_gambar->getClientOriginalExtension();
-            if(in_array($ext,$extArray)){
-                $pathImage =  $this->uploadFile($request->material_file_gambar,'material','image');
+            if (in_array($ext, $extArray)) {
+                $pathImage =  $this->uploadFile($request->material_file_gambar, 'material', 'image');
                 $baseUrl =  url('/');
 
-                if($baseUrl == "https://emodule-api.tempatkoding.com"){
-                    $urlImage = url("/storage/".$pathImage);
-                }else{
-                    $urlImage = url('/'.$pathImage);
+                if ($baseUrl == "https://emodule-api.tempatkoding.com") {
+                    $urlImage = url("/storage/" . $pathImage);
+                } else {
+                    $urlImage = url('/' . $pathImage);
                 }
 
                 $data['file_material'] = $urlImage;
-
-            }else{
+            } else {
                 return redirect()->back()->with('success', 'Gagal Menginput Data');
             }
         }
@@ -188,16 +191,17 @@ class HomeController extends Controller
         LearningMaterial::create($data);
 
         return redirect()->back()->with('success', 'Berhasil Menginput Data');
-
     }
 
-    public function edit_material($id,$id_material){
+    public function edit_material($id, $id_material)
+    {
         $detailModule = LearningModule::where('id_module', $id)->firstOrFail();
         $material = LearningMaterial::findOrFail($id_material);
-        return view('edit_material', compact('detailModule','material'));
+        return view('edit_material', compact('detailModule', 'material'));
     }
 
-    public function update_material(Request $request,$id,$id_material){
+    public function update_material(Request $request, $id, $id_material)
+    {
 
         $this->validate($request, [
             'material_title' => 'required',
@@ -220,29 +224,27 @@ class HomeController extends Controller
                 'material_file_gambar' => 'mimes:png,jpg,jpeg|max:2046',
             ]);
 
-            if($request->has('material_file_gambar')){
+            if ($request->has('material_file_gambar')) {
                 $extArray = [
-                    'jpg','png','jpeg'
+                    'jpg', 'png', 'jpeg'
                 ];
 
                 $ext = $request->material_file_gambar->getClientOriginalExtension();
-                if(in_array($ext,$extArray)){
-                    $pathImage =  $this->uploadFile($request->material_file_gambar,'material','image');
+                if (in_array($ext, $extArray)) {
+                    $pathImage =  $this->uploadFile($request->material_file_gambar, 'material', 'image');
                     $baseUrl =  url('/');
 
-                    if($baseUrl == "https://emodule-api.tempatkoding.com"){
-                        $urlImage = url("/storage/".$pathImage);
-                    }else{
-                        $urlImage = url('/'.$pathImage);
+                    if ($baseUrl == "https://emodule-api.tempatkoding.com") {
+                        $urlImage = url("/storage/" . $pathImage);
+                    } else {
+                        $urlImage = url('/' . $pathImage);
                     }
 
                     $data['file_material'] = $urlImage;
-
-                }else{
+                } else {
                     return redirect()->back()->with('success', 'Gagal Menginput Data');
                 }
             }
-
         }
 
         if ($request->tipe_material == "video") {
@@ -253,55 +255,54 @@ class HomeController extends Controller
             $data['file_material'] = $request->material_file_video;
         }
 
-       $material->update($data);
+        $material->update($data);
 
         return redirect()->back()->with('success', 'Berhasil Update Data');
-
-
     }
 
-    public function delete_material($id,$id_material){
+    public function delete_material($id, $id_material)
+    {
         $material = LearningMaterial::find($id_material);
         $material->delete();
         return redirect()->back()->with('success', 'Berhasil Menghapus Data');
-
-
     }
 
-    public function tambah_practice($id,$id_material){
+    public function tambah_practice($id, $id_material)
+    {
         $detailModule = LearningModule::where('id_module', $id)->firstOrFail();
         $material = LearningMaterial::with('practice')->findOrFail($id_material);
 
-        return view('tambah_practice',compact('detailModule','material'));
+        return view('tambah_practice', compact('detailModule', 'material'));
     }
 
-    public function store_practice(Request $request,$id,$id_material){
-       $validate =  $this->validate($request, [
+    public function store_practice(Request $request, $id, $id_material)
+    {
+        $validate =  $this->validate($request, [
             'practice_title' => 'required',
             'practice_quiz' => 'required',
             'answer_choices' => 'required|array',
             'correct_answer' => 'required'
         ]);
 
-       $data['title'] = $validate['practice_title'];
-       $data['quiz'] = $validate['practice_quiz'];
-       $data['id_material'] = $id_material;
-       $data['answer_choices'] = json_encode($request->answer_choices);
-       $data['correct_answer'] = $validate['correct_answer'];
+        $data['title'] = $validate['practice_title'];
+        $data['quiz'] = $validate['practice_quiz'];
+        $data['id_material'] = $id_material;
+        $data['answer_choices'] = json_encode($request->answer_choices);
+        $data['correct_answer'] = $validate['correct_answer'];
 
-       Practice::create($data);
+        Practice::create($data);
 
-       return redirect()->back()->with('success', 'Berhasil Menambahkan Data');
-
+        return redirect()->back()->with('success', 'Berhasil Menambahkan Data');
     }
 
-    public function delete_practice($id,$id_material,$id_practice){
+    public function delete_practice($id, $id_material, $id_practice)
+    {
         $practice = Practice::findOrFail($id_practice);
         $practice->delete();
         return redirect()->back()->with('success', 'Berhasil Menghapus Data');
     }
 
-    private function uploadFile($file,$root_folder,$folderName)
+    private function uploadFile($file, $root_folder, $folderName)
     {
         try {
             $fileNameWithExt = $file->getClientOriginalName();
@@ -314,10 +315,9 @@ class HomeController extends Controller
 
             $fileNameToStore = $filename . '_' . time() . '.' . $extension;
 
-            $path = $file->storeAs('files/uploads/'.$root_folder.'/'.$folderName, $fileNameToStore, 'public');
+            $path = $file->storeAs('files/uploads/' . $root_folder . '/' . $folderName, $fileNameToStore, 'public');
 
             return $path;
-
         } catch (\Throwable $th) {
             return false;
         }
